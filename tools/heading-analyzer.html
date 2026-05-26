@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heading Structure Analyzer - Free SEO Tool | ToolStack</title>
+    <meta name="description" content="Free heading structure analyzer. Check your H1-H6 hierarchy for SEO best practices. Avoid common heading mistakes that hurt your rankings.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+        </div>
+    </header>
+
+    <main class="tool-page container">
+        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <h1>Heading Structure Analyzer</h1>
+        <p class="subtitle">Analyze your H1-H6 heading structure for SEO best practices. Detect missing headings, improper hierarchy, and keyword opportunities.</p>
+
+        <div class="tool-box">
+            <label for="h-input">Paste HTML or text content</label>
+            <textarea id="h-input" placeholder='Paste HTML with headings like:
+
+<h1>My Title</h1>
+<p>Some content</p>
+<h2>Section 1</h2>
+<p>More content</p>
+<h3>Subsection</h3>
+<p>Details</p>
+<h2>Section 2</h2>' style="min-height:220px;font-family:monospace;font-size:0.85rem;"></textarea>
+            <button class="btn" onclick="analyzeHeadings()">Analyze Headings</button>
+        </div>
+
+        <div class="result-box" id="h-results">
+            <h3>Heading Structure</h3>
+            <div id="h-structure"></div>
+            <div style="margin-top:20px;">
+                <h3>Summary</h3>
+                <div class="stat"><span class="label">Total Headings</span><span class="value" id="h-total">0</span></div>
+                <div class="stat"><span class="label">Has H1?</span><span class="value" id="h-has-h1">—</span></div>
+                <div class="stat"><span class="label">Issues Found</span><span class="value" id="h-issues">—</span></div>
+            </div>
+            <div id="h-issues-list" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="affiliate-rec">
+            <h3>🔍 Crawl Your Entire Site</h3>
+            <p>Screaming Frog SEO Spider finds heading issues across hundreds of pages in minutes. Free for up to 500 URLs.</p>
+            <a href="https://www.screamingfrog.co.uk/seo-spider/" class="btn" target="_blank" rel="nofollow sponsored">Download Screaming Frog →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ToolStack. All tools are free and no data is stored.</p>
+            <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
+        </div>
+    </footer>
+
+    <script>
+    function analyzeHeadings() {
+        const input = document.getElementById('h-input').value.trim();
+        if (!input) { document.getElementById('h-results').classList.remove('visible'); return; }
+
+        // Extract headings from HTML tags or detect markdown-style headings
+        const htmlHeadings = input.match(/<h([1-6])[^>]*>(.*?)<\/h\1>/gi);
+        const markdownHeadings = input.match(/^#{1,6}\s+.+/gm);
+
+        let headings = [];
+
+        if (htmlHeadings) {
+            headings = htmlHeadings.map(h => {
+                const match = h.match(/<h([1-6])[^>]*>(.*?)<\/h\1>/i);
+                return { level: parseInt(match[1]), text: match[2].replace(/<[^>]*>/g, '').trim() };
+            });
+        } else if (markdownHeadings) {
+            headings = markdownHeadings.map(h => {
+                const match = h.match(/^(#{1,6})\s+(.+)/);
+                return { level: match[1].length, text: match[2].trim() };
+            });
+        } else if (input.includes('<h')) {
+            // Malformed HTML headings
+            const looseMatch = input.match(/<h([1-6])[^>]*>/gi);
+            if (looseMatch) {
+                headings = looseMatch.map(h => {
+                    const m = h.match(/<h([1-6])/i);
+                    return { level: parseInt(m[1]), text: '(unclosed tag)' };
+                });
+            }
+        }
+
+        if (headings.length === 0) {
+            document.getElementById('h-structure').innerHTML = '<p style="color:var(--text2);">No headings found. Ensure you paste HTML with &lt;h1&gt; to &lt;h6&gt; tags or Markdown headings.</p>';
+            document.getElementById('h-total').textContent = '0';
+            document.getElementById('h-has-h1').textContent = '❌';
+            document.getElementById('h-issues').textContent = 'No headings found';
+            document.getElementById('h-issues-list').innerHTML = '';
+            document.getElementById('h-results').classList.add('visible');
+            return;
+        }
+
+        // Build structure display
+        let html = '<div style="font-family:monospace;font-size:0.9rem;line-height:2;">';
+        const issues = [];
+        let hasH1 = false;
+        let expectedLevel = 1;
+
+        headings.forEach((h, i) => {
+            const indent = '&nbsp;&nbsp;'.repeat(h.level - 1);
+            const colors = ['#6c8cff', '#34d399', '#fbbf24', '#f97316', '#ef4444', '#a78bfa'];
+            const color = colors[h.level - 1];
+            html += `<div style="border-left:3px solid ${color};padding-left:12px;margin-bottom:4px;">${indent}&lt;h${h.level}&gt; ${h.text} &lt;/h${h.level}&gt;</div>`;
+
+            if (h.level === 1) hasH1 = true;
+
+            // Check hierarchy
+            if (i === 0 && h.level !== 1) {
+                issues.push(`First heading is H${h.level}, not H1. Pages should start with a single H1.`);
+            }
+            if (h.level > expectedLevel + 1) {
+                issues.push(`Heading "H${h.level}: ${h.text}" skips from H${expectedLevel}. Avoid jumping heading levels.`);
+            }
+            if (i > 0 && h.level < expectedLevel - 1) {
+                // Allow going back up, just track
+            }
+            expectedLevel = h.level;
+        });
+
+        if (!hasH1) issues.push('No H1 heading found. Every page should have exactly one H1.');
+        if (headings.filter(h => h.level === 1).length > 1) issues.push('Multiple H1 headings found. Use only one H1 per page.');
+
+        html += '</div>';
+        document.getElementById('h-structure').innerHTML = html;
+        document.getElementById('h-total').textContent = headings.length;
+        document.getElementById('h-has-h1').textContent = hasH1 ? '✅' : '❌';
+
+        const issuesHtml = issues.map(issue => 
+            `<div style="color:${issue.includes('skips') || issue.includes('No H1') || issue.includes('Multiple') ? '#ef4444' : '#fbbf24'};padding:6px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">⚠️ ${issue}</div>`
+        ).join('');
+
+        document.getElementById('h-issues-list').innerHTML = issuesHtml || '<div style="color:var(--green);">✅ No issues found! Good heading structure.</div>';
+        document.getElementById('h-issues').textContent = issues.length > 0 ? issues.length + ' issue' + (issues.length > 1 ? 's' : '') : '✅ Clean';
+        document.getElementById('h-results').classList.add('visible');
+    }
+    </script>
+</body>
+</html>

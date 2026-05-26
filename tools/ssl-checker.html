@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSL Checker - Free Guide & Tools | ToolStack</title>
+    <meta name="description" content="Free SSL checker guide. Learn how to verify SSL certificates, check expiry dates, and find SSL issues before they hurt your SEO.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+        </div>
+    </header>
+
+    <main class="tool-page container">
+        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <h1>SSL Checker</h1>
+        <p class="subtitle">Verify SSL certificates, check expiry dates, and ensure your site is secure. SSL is a confirmed ranking factor — don't let it expire.</p>
+
+        <div class="tool-box">
+            <h3>🔒 Quick SSL Check</h3>
+            <p style="color:var(--text2);margin-bottom:16px;">Enter a domain below and use these free tools to check its SSL certificate.</p>
+            <input type="text" id="ssl-domain" placeholder="example.com" style="margin-bottom:12px;" value="github.com">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="#" class="btn" onclick="checkSSLRedirect(event)">Check SSL</a>
+            </div>
+            <div id="ssl-result" style="margin-top:16px;display:none;">
+                <div class="stat"><span class="label">Quick info for <span id="ssl-domain-display"></span>:</span></div>
+            </div>
+        </div>
+
+        <div style="margin-top:32px;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);">
+            <h3>How to Check SSL Manually</h3>
+            <ol style="color:var(--text2);line-height:2;padding-left:20px;">
+                <li><strong style="color:var(--text);">SSL Labs:</strong> Visit <a href="https://www.ssllabs.com/ssltest/" target="_blank" rel="nofollow">SSL Labs</a> — the industry standard. Enter your domain for a full report including certificate chain, cipher strength, and vulnerabilities.</li>
+                <li><strong style="color:var(--text);">Browser check:</strong> Click the padlock icon in your browser's address bar. It shows certificate issuer, expiry date, and connection security.</li>
+                <li><strong style="color:var(--text);">OpenSSL command:</strong> Run <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;">openssl s_client -connect example.com:443 -servername example.com 2>/dev/null | openssl x509 -noout -dates</code></li>
+                <li><strong style="color:var(--text);">What's My SSL:</strong> <a href="https://whatsmyssl.com/" target="_blank" rel="nofollow">WhatsMySSL.com</a> checks your browser's TLS support.</li>
+            </ol>
+        </div>
+
+        <div class="affiliate-rec" style="margin-top:32px;">
+            <h3>🔐 Never Let SSL Expire Again</h3>
+            <p>Use UptimeRobot or Freshping to monitor your SSL certificate and alert you before it expires. Free tiers available.</p>
+            <a href="https://www.uptimerobot.com/" class="btn" target="_blank" rel="nofollow sponsored">Set Up SSL Monitoring →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ToolStack. All tools are free and no data is stored.</p>
+            <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
+        </div>
+    </footer>
+
+    <script>
+    function checkSSLRedirect(e) {
+        e.preventDefault();
+        const domain = document.getElementById('ssl-domain').value.trim();
+        if (!domain) return;
+
+        document.getElementById('ssl-domain-display').textContent = domain;
+        const result = document.getElementById('ssl-result');
+        result.style.display = 'block';
+        result.innerHTML = `
+            <div class="stat"><span class="label">Domain</span><span class="value">${domain}</span></div>
+            <div class="stat"><span class="label">Recommended Action</span><span class="value">Use <a href="https://www.ssllabs.com/ssltest/analyze.html?d=${encodeURIComponent(domain)}" target="_blank" rel="nofollow">SSL Labs Report</a></span></div>
+            <div class="stat"><span class="label">Browser Check</span><span class="value"><a href="https://${domain}" target="_blank">Visit https://${domain}</a> and click the padlock</span></div>
+            <div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:8px;font-size:0.85rem;color:var(--text2);">
+                💡 SSL Labs provides the most comprehensive analysis including certificate chain validation, cipher suite strength, and TLS protocol support. Takes 1-2 minutes.
+            </div>
+        `;
+    }
+    </script>
+</body>
+</html>

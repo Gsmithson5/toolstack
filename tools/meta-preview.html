@@ -87,7 +87,8 @@
         const path = new URL(url).pathname;
 
         // Google preview
-        document.getElementById('gp-url').textContent = domain + ' › ' + path.replace(/\//g, ' › ').replace(/^-/, '');
+        const pathPart = path.replace(/^\//, '').replace(/\//g, ' › ');
+        document.getElementById('gp-url').textContent = domain + (pathPart ? ' › ' + pathPart : '');
         document.getElementById('gp-title').textContent = title;
         document.getElementById('gp-desc').textContent = desc;
 
