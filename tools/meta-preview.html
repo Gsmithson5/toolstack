@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Tag Preview Generator - Free SEO Tool | ToolStack</title>
+    <meta name="description" content="Free meta tag preview tool. See how your page appears in Google search results, Twitter cards, and Facebook shares before you publish.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+        </div>
+    </header>
+
+    <main class="tool-page container">
+        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <h1>Meta Tag Preview Generator</h1>
+        <p class="subtitle">Preview how your page looks on Google, Twitter, and Facebook.</p>
+
+        <div class="tool-box">
+            <label for="page-url">Page URL</label>
+            <input type="url" id="page-url" placeholder="https://your-site.com/page" value="https://example.com/blog-post">
+
+            <label for="page-title">Meta Title</label>
+            <input type="text" id="page-title" placeholder="Your SEO Title (50-60 chars)" value="10 SEO Tips That Actually Work in 2026 | BlogName">
+
+            <label for="page-desc">Meta Description</label>
+            <textarea id="page-desc" placeholder="Meta description (150-160 chars)">Discover 10 actionable SEO tips that will boost your rankings in 2026. From keyword clustering to EEAT, we cover it all.</textarea>
+
+            <label for="page-image">OG Image URL (optional)</label>
+            <input type="url" id="page-image" placeholder="https://your-site.com/og-image.jpg" value="https://via.placeholder.com/1200x630/1a1d28/6c8cff?text=SEO+Tips+2026">
+
+            <button class="btn" onclick="generatePreview()">Generate Preview</button>
+        </div>
+
+        <div class="result-box" id="preview-result">
+            <h3>Google Search Result</h3>
+            <div id="google-preview" style="background:#fff;color:#222;padding:16px;border-radius:8px;margin-bottom:24px;font-family:Arial,sans-serif;">
+                <div style="color:#202124;font-size:14px;margin-bottom:2px;" id="gp-url">example.com › blog-post</div>
+                <div style="color:#1a0dab;font-size:20px;font-weight:400;margin-bottom:3px;cursor:pointer;" id="gp-title">10 SEO Tips That Actually Work in 2026</div>
+                <div style="color:#545454;font-size:14px;line-height:1.58;" id="gp-desc">Discover 10 actionable SEO tips that will boost your rankings in 2026. From keyword clustering to EEAT, we cover it all.</div>
+            </div>
+
+            <h3>Twitter Card Preview</h3>
+            <div style="background:#fff;color:#000;border-radius:16px;overflow:hidden;border:1px solid #e1e8ed;margin-bottom:24px;max-width:500px;font-family:system-ui,-apple-system,sans-serif;">
+                <div style="background:#1a1d28;height:200px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;" id="tw-image">OG Image Preview</div>
+                <div style="padding:12px 16px;">
+                    <div style="color:#8899a6;font-size:13px;margin-bottom:2px;" id="tw-domain">example.com</div>
+                    <div style="color:#000;font-weight:bold;font-size:14px;margin-bottom:2px;" id="tw-title">10 SEO Tips That Actually Work in 2026 | BlogName</div>
+                    <div style="color:#8899a6;font-size:13px;" id="tw-desc">Discover 10 actionable SEO tips that will boost your rankings in 2026. From keyword clustering to EEAT, we cover it all.</div>
+                </div>
+            </div>
+
+            <h3>Character Counts</h3>
+            <div id="char-counts">
+                <div class="stat"><span class="label">Title Length</span><span class="value" id="cc-title">42 / 60 ✓</span></div>
+                <div class="stat"><span class="label">Description Length</span><span class="value" id="cc-desc">125 / 160 ✓</span></div>
+            </div>
+        </div>
+
+        <div class="affiliate-rec">
+            <h3>🔧 Want Better SEO? Here's What We Use</h3>
+            <p>Rank higher with the same tools the pros use. Our top picks for SEO analysis, keyword research, and site optimization.</p>
+            <a href="/blog/best-seo-tools-2026.html" class="btn" target="_blank">See Our Top SEO Tools →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ToolStack. All tools are free and no data is stored.</p>
+            <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
+        </div>
+    </footer>
+
+    <script>
+    function generatePreview() {
+        const url = document.getElementById('page-url').value || 'https://example.com';
+        const title = document.getElementById('page-title').value || 'Untitled';
+        const desc = document.getElementById('page-desc').value || '';
+        const image = document.getElementById('page-image').value || '';
+
+        const domain = new URL(url).hostname.replace('www.', '');
+        const path = new URL(url).pathname;
+
+        // Google preview
+        document.getElementById('gp-url').textContent = domain + ' › ' + path.replace(/\//g, ' › ').replace(/^-/, '');
+        document.getElementById('gp-title').textContent = title;
+        document.getElementById('gp-desc').textContent = desc;
+
+        // Twitter preview
+        document.getElementById('tw-domain').textContent = domain;
+        document.getElementById('tw-title').textContent = title;
+        document.getElementById('tw-desc').textContent = desc;
+        const twImg = document.getElementById('tw-image');
+        twImg.innerHTML = image ? `<img src="${image}" style="width:100%;height:100%;object-fit:cover;" alt="preview" onerror="this.parentElement.textContent='OG Image Not Found'">` : 'No OG Image Set';
+
+        // Character counts
+        document.getElementById('cc-title').textContent = `${title.length} / 60 ${title.length <= 60 ? '✓' : '⚠️ Too long'}`;
+        document.getElementById('cc-desc').textContent = `${desc.length} / 160 ${desc.length <= 160 ? '✓' : '⚠️ Too long'}`;
+
+        document.getElementById('preview-result').classList.add('visible');
+    }
+
+    // Generate on load with defaults
+    window.addEventListener('DOMContentLoaded', generatePreview);
+    </script>
+</body>
+</html>

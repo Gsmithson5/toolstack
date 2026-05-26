@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readability Score Checker - Free SEO Tool | ToolStack</title>
+    <meta name="description" content="Free readability checker. Calculate Flesch-Kincaid, Gunning Fog, and other readability scores for any text.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+        </div>
+    </header>
+
+    <main class="tool-page container">
+        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <h1>Readability Score Checker</h1>
+        <p class="subtitle">Check Flesch-Kincaid, Gunning Fog, and Coleman-Liau scores for any piece of text.</p>
+
+        <div class="tool-box">
+            <label for="read-input">Paste your text</label>
+            <textarea id="read-input" placeholder="Paste your content to analyze readability..." style="min-height:200px;"></textarea>
+            <button class="btn" onclick="analyzeReadability()">Check Readability</button>
+        </div>
+
+        <div class="result-box" id="read-results">
+            <h3>Readability Scores</h3>
+            <div class="stat"><span class="label">Flesch-Kincaid Reading Ease</span><span class="value" id="r-fk">—</span></div>
+            <div class="stat"><span class="label">Flesch-Kincaid Grade Level</span><span class="value" id="r-fk-grade">—</span></div>
+            <div class="stat"><span class="label">Gunning Fog Index</span><span class="value" id="r-gf">—</span></div>
+            <div class="stat"><span class="label">Coleman-Liau Index</span><span class="value" id="r-cl">—</span></div>
+            <div class="stat"><span class="label">Target Audience</span><span class="value" id="r-audience">—</span></div>
+            <div class="stat"><span class="label">Average Reading Age</span><span class="value" id="r-age">—</span></div>
+        </div>
+
+        <div class="affiliate-rec">
+            <h3>📖 Write Clearer Content</h3>
+            <p>Hemingway Editor and Grammarly can help you simplify your writing. Check out our top picks.</p>
+            <a href="/blog/best-writing-tools.html" class="btn" target="_blank">Best Writing Tools →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ToolStack. All tools are free and no data is stored.</p>
+            <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
+        </div>
+    </footer>
+
+    <script>
+    function countSyllables(word) {
+        word = word.toLowerCase().replace(/[^a-z]/g, '');
+        if (!word.length) return 0;
+        word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+        word = word.replace(/^y/, '');
+        const syl = word.match(/[aeiouy]{1,2}/g);
+        return syl ? syl.length : 1;
+    }
+
+    function analyzeReadability() {
+        const text = document.getElementById('read-input').value.trim();
+        if (!text) { document.getElementById('read-results').classList.remove('visible'); return; }
+
+        // Count words, sentences, syllables
+        const words = text.replace(/[^a-zA-Z\s]/g, '').split(/\s+/).filter(w => w.length > 0);
+        const wordCount = words.length;
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length || 1;
+        const totalSyllables = words.reduce((sum, w) => sum + countSyllables(w), 0);
+        const charsPer100 = words.reduce((sum, w) => sum + w.length, 0) / wordCount * 100;
+        const syllablesPer100 = totalSyllables / wordCount * 100;
+        const sentencesPer100 = sentences / wordCount * 100;
+        const complexWords = words.filter(w => countSyllables(w) >= 3).length;
+
+        // Flesch-Kincaid Reading Ease
+        const fkEase = 206.835 - (1.015 * (wordCount / sentences)) - (84.6 * (totalSyllables / wordCount));
+        const fkGrade = 0.39 * (wordCount / sentences) + 11.8 * (totalSyllables / wordCount) - 15.59;
+
+        // Gunning Fog
+        const fog = 0.4 * ((wordCount / sentences) + 100 * (complexWords / wordCount));
+
+        // Coleman-Liau
+        const L = charsPer100 / 100;
+        const S = sentencesPer100 / 100;
+        const cl = (0.0588 * L * 100) - (0.296 * S * 100) - 15.8;
+
+        const ease = Math.round(Math.min(Math.max(fkEase, 0), 100));
+        const grade = Math.round(Math.min(Math.max(fkGrade, 0), 20) * 10) / 10;
+        const fogIdx = Math.round(Math.min(Math.max(fog, 0), 20) * 10) / 10;
+        const clIdx = Math.round(Math.min(Math.max(cl, 0), 20) * 10) / 10;
+
+        let audience = '';
+        if (ease >= 90) audience = 'Very easy (11 year old)';
+        else if (ease >= 80) audience = 'Easy (12-13 year old)';
+        else if (ease >= 70) audience = 'Fairly easy (14-15 year old)';
+        else if (ease >= 60) audience = 'Standard (16-17 year old)';
+        else if (ease >= 50) audience = 'Fairly difficult (18-19 year old)';
+        else if (ease >= 30) audience = 'Difficult (college)';
+        else audience = 'Very difficult (graduate)';
+
+        const age = ease >= 90 ? '10-11' : ease >= 80 ? '11-13' : ease >= 70 ? '13-15' : 
+                    ease >= 60 ? '15-17' : ease >= 50 ? '17-19' : ease >= 30 ? '19-22' : '22+';
+
+        document.getElementById('r-fk').textContent = ease + '/100 ' + (ease >= 60 ? '✓' : '⚠️');
+        document.getElementById('r-fk-grade').textContent = grade;
+        document.getElementById('r-gf').textContent = fogIdx + ' ' + (fogIdx <= 12 ? '✓' : '⚠️');
+        document.getElementById('r-cl').textContent = clIdx;
+        document.getElementById('r-audience').textContent = audience;
+        document.getElementById('r-age').textContent = age + ' years';
+
+        document.getElementById('read-results').classList.add('visible');
+    }
+    </script>
+</body>
+</html>

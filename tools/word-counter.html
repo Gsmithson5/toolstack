@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter - Free Online Tool | ToolStack</title>
+    <meta name="description" content="Free word counter tool. Count words, characters, sentences, paragraphs, and reading time for any text. No signup required.">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+        </div>
+    </header>
+
+    <main class="tool-page container">
+        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <h1>Word Counter</h1>
+        <p class="subtitle">Count words, characters, sentences, and more. Just type or paste.</p>
+
+        <div class="tool-box">
+            <label for="text-input">Paste your text below</label>
+            <textarea id="text-input" placeholder="Type or paste your content here..." style="min-height:250px;"></textarea>
+            <button class="btn" onclick="analyzeText()">Analyze</button>
+        </div>
+
+        <div class="result-box" id="results">
+            <h3>Results</h3>
+            <div class="stat"><span class="label">Words</span><span class="value" id="r-words">0</span></div>
+            <div class="stat"><span class="label">Characters (with spaces)</span><span class="value" id="r-chars">0</span></div>
+            <div class="stat"><span class="label">Characters (no spaces)</span><span class="value" id="r-chars-ns">0</span></div>
+            <div class="stat"><span class="label">Sentences</span><span class="value" id="r-sentences">0</span></div>
+            <div class="stat"><span class="label">Paragraphs</span><span class="value" id="r-paragraphs">0</span></div>
+            <div class="stat"><span class="label">Average Word Length</span><span class="value" id="r-avgwl">0</span></div>
+            <div class="stat"><span class="label">Reading Time</span><span class="value" id="r-reading">0 min</span></div>
+        </div>
+
+        <div class="affiliate-rec">
+            <h3>✍️ Writing High-Ranking Content?</h3>
+            <p>Use Jasper AI to generate SEO-optimized content 10x faster. Start your free trial.</p>
+            <a href="/blog/best-ai-writing-tools.html" class="btn" target="_blank">Best AI Writing Tools →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ToolStack. All tools are free and no data is stored.</p>
+            <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
+        </div>
+    </footer>
+
+    <script>
+    function analyzeText() {
+        const text = document.getElementById('text-input').value;
+        if (!text.trim()) { document.getElementById('results').classList.remove('visible'); return; }
+
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+        const chars = text.length;
+        const charsNoSpace = text.replace(/\s/g, '').length;
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+        const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+        const avgWordLen = words.length > 0 ? (charsNoSpace / words.length).toFixed(1) : 0;
+        const readingTime = Math.ceil(words.length / 238); // avg reading speed
+
+        document.getElementById('r-words').textContent = words.length.toLocaleString();
+        document.getElementById('r-chars').textContent = chars.toLocaleString();
+        document.getElementById('r-chars-ns').textContent = charsNoSpace.toLocaleString();
+        document.getElementById('r-sentences').textContent = sentences.toLocaleString();
+        document.getElementById('r-paragraphs').textContent = paragraphs.toLocaleString();
+        document.getElementById('r-avgwl').textContent = avgWordLen;
+        document.getElementById('r-reading').textContent = readingTime + ' min' + (readingTime !== 1 ? 's' : '');
+        document.getElementById('results').classList.add('visible');
+    }
+
+    document.getElementById('text-input').addEventListener('input', analyzeText);
+    </script>
+</body>
+</html>
