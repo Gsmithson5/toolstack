@@ -6,6 +6,22 @@
     <title>Word Counter - Free Online Tool | ToolStack</title>
     <meta name="description" content="Free word counter tool. Count words, characters, sentences, paragraphs, and reading time for any text. No signup required.">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Word Counter",
+      "url": "https://toolstack.com/tools/word-counter.html",
+      "description": "Free word counter tool to count words, characters, sentences, paragraphs, and reading time.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -37,7 +53,7 @@
             <div class="stat"><span class="label">Reading Time</span><span class="value" id="r-reading">0 min</span></div>
         </div>
 
-        <div class="affiliate-rec">
+        <div class="affiliate-rec" id="affiliate-rec" style="display:none;">
             <h3>✍️ Writing High-Ranking Content?</h3>
             <p>Use Jasper AI to generate SEO-optimized content 10x faster. Start your free trial.</p>
             <a href="/blog/best-ai-writing-tools.html" class="btn" target="_blank">Best AI Writing Tools →</a>
@@ -55,7 +71,11 @@
     <script>
     function analyzeText() {
         const text = document.getElementById('text-input').value;
-        if (!text.trim()) { document.getElementById('results').classList.remove('visible'); return; }
+        if (!text.trim()) { 
+            document.getElementById('results').classList.remove('visible'); 
+            document.getElementById('affiliate-rec').style.display = 'none';
+            return; 
+        }
 
         const words = text.trim().split(/\s+/).filter(w => w.length > 0);
         const chars = text.length;
@@ -73,6 +93,7 @@
         document.getElementById('r-avgwl').textContent = avgWordLen;
         document.getElementById('r-reading').textContent = readingTime + ' min' + (readingTime !== 1 ? 's' : '');
         document.getElementById('results').classList.add('visible');
+        document.getElementById('affiliate-rec').style.display = 'block';
     }
 
     document.getElementById('text-input').addEventListener('input', analyzeText);

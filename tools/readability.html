@@ -6,6 +6,21 @@
     <title>Readability Score Checker - Free SEO Tool | ToolStack</title>
     <meta name="description" content="Free readability checker. Calculate Flesch-Kincaid, Gunning Fog, and other readability scores for any text.">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Readability Score Checker",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "description": "Free readability checker. Calculate Flesch-Kincaid, Gunning Fog, and other readability scores for any text.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -26,7 +41,7 @@
             <button class="btn" onclick="analyzeReadability()">Check Readability</button>
         </div>
 
-        <div class="result-box" id="read-results">
+        <div class="result-box" id="read-results" style="display:none;">
             <h3>Readability Scores</h3>
             <div class="stat"><span class="label">Flesch-Kincaid Reading Ease</span><span class="value" id="r-fk">—</span></div>
             <div class="stat"><span class="label">Flesch-Kincaid Grade Level</span><span class="value" id="r-fk-grade">—</span></div>
@@ -34,13 +49,13 @@
             <div class="stat"><span class="label">Coleman-Liau Index</span><span class="value" id="r-cl">—</span></div>
             <div class="stat"><span class="label">Target Audience</span><span class="value" id="r-audience">—</span></div>
             <div class="stat"><span class="label">Average Reading Age</span><span class="value" id="r-age">—</span></div>
-        </div>
-
-        <div class="affiliate-rec">
-            <h3>📖 Write Clearer Content</h3>
-            <p>Hemingway Editor and Grammarly can help you simplify your writing. Check out our top picks.</p>
-            <a href="/blog/best-writing-tools.html" class="btn" target="_blank">Best Writing Tools →</a>
-            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+            
+            <div class="affiliate-rec" id="affiliate-rec" style="margin-top:20px; padding:15px; background:#f9f9f9; border-left:4px solid #007bff; display:none;">
+                <h3 id="affiliate-title">Need to simplify your writing?</h3>
+                <p id="affiliate-text">Your content has a high complexity score. Tools like Grammarly or Hemingway Editor can help you simplify your sentences and improve readability in seconds.</p>
+                <a href="/blog/best-writing-tools.html" class="btn" target="_blank">View Recommended Writing Tools →</a>
+                <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+            </div>
         </div>
     </main>
 
@@ -63,7 +78,7 @@
 
     function analyzeReadability() {
         const text = document.getElementById('read-input').value.trim();
-        if (!text) { document.getElementById('read-results').classList.remove('visible'); return; }
+        if (!text) { document.getElementById('read-results').style.display = 'none'; return; }
 
         // Count words, sentences, syllables
         const words = text.replace(/[^a-zA-Z\s]/g, '').split(/\s+/).filter(w => w.length > 0);
@@ -111,7 +126,15 @@
         document.getElementById('r-audience').textContent = audience;
         document.getElementById('r-age').textContent = age + ' years';
 
-        document.getElementById('read-results').classList.add('visible');
+        document.getElementById('read-results').style.display = 'block';
+        
+        // Show affiliate recommendation if readability score is low
+        const affDiv = document.getElementById('affiliate-rec');
+        if (ease < 60 || fogIdx > 12) {
+            affDiv.style.display = 'block';
+        } else {
+            affDiv.style.display = 'none';
+        }
     }
     </script>
 </body>

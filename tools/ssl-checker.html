@@ -6,6 +6,22 @@
     <title>SSL Checker - Free Guide & Tools | ToolStack</title>
     <meta name="description" content="Free SSL checker guide. Learn how to verify SSL certificates, check expiry dates, and find SSL issues before they hurt your SEO.">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SSL Checker Tool",
+      "url": "https://toolstack.com/tools/ssl-checker.html",
+      "description": "Free tool to guide users on how to check SSL certificates, monitor expiration, and ensure secure website connections.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -42,10 +58,10 @@
             </ol>
         </div>
 
-        <div class="affiliate-rec" style="margin-top:32px;">
-            <h3>🔐 Never Let SSL Expire Again</h3>
-            <p>Use UptimeRobot or Freshping to monitor your SSL certificate and alert you before it expires. Free tiers available.</p>
-            <a href="https://www.uptimerobot.com/" class="btn" target="_blank" rel="nofollow sponsored">Set Up SSL Monitoring →</a>
+        <div id="affiliate-cta" class="affiliate-rec" style="margin-top:32px;padding:24px;background:var(--bg2);border:2px solid var(--accent);border-radius:var(--radius);">
+            <h3 id="cta-heading">🔐 Never Let SSL Expire Again</h3>
+            <p id="cta-text">Monitoring your SSL certificate automatically is crucial for maintaining security and search rankings. Keep your site safe with automated alerts.</p>
+            <a id="cta-link" href="https://www.uptimerobot.com/" class="btn" target="_blank" rel="nofollow sponsored">Set Up SSL Monitoring →</a>
             <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
         </div>
     </main>
@@ -74,6 +90,12 @@
                 💡 SSL Labs provides the most comprehensive analysis including certificate chain validation, cipher suite strength, and TLS protocol support. Takes 1-2 minutes.
             </div>
         `;
+        
+        // Context-aware CTA update
+        if (domain.includes('bank') || domain.includes('shop') || domain.includes('store')) {
+            document.getElementById('cta-heading').textContent = "⚠️ High-Traffic Site? Don't Risk SSL Downtime";
+            document.getElementById('cta-text').textContent = "For e-commerce and banking, SSL expiration means immediate trust loss. Use UptimeRobot's automated monitoring to secure your reputation.";
+        }
     }
     </script>
 </body>

@@ -6,6 +6,17 @@
     <title>Heading Structure Analyzer - Free SEO Tool | ToolStack</title>
     <meta name="description" content="Free heading structure analyzer. Check your H1-H6 hierarchy for SEO best practices. Avoid common heading mistakes that hurt your rankings.">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Heading Structure Analyzer",
+      "description": "Free SEO tool to analyze your H1-H6 heading hierarchy for SEO best practices.",
+      "url": "https://toolstack.com/tools/heading-analyzer.html",
+      "applicationCategory": "SEO Tool",
+      "operatingSystem": "Any"
+    }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -44,6 +55,13 @@
                 <div class="stat"><span class="label">Issues Found</span><span class="value" id="h-issues">—</span></div>
             </div>
             <div id="h-issues-list" style="margin-top:12px;"></div>
+        </div>
+
+        <div class="affiliate-rec" id="context-cta" style="display:none; margin-top: 20px; padding: 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
+            <h3 id="cta-title">🔍 Advanced SEO Analysis Needed?</h3>
+            <p id="cta-text">Need to crawl your entire site for heading errors? Screaming Frog SEO Spider is the industry standard for site audits.</p>
+            <a href="https://www.screamingfrog.co.uk/seo-spider/" class="btn" target="_blank" rel="nofollow sponsored">Download Screaming Frog →</a>
+            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
         </div>
 
         <div class="affiliate-rec">
@@ -145,6 +163,16 @@
         document.getElementById('h-issues-list').innerHTML = issuesHtml || '<div style="color:var(--green);">✅ No issues found! Good heading structure.</div>';
         document.getElementById('h-issues').textContent = issues.length > 0 ? issues.length + ' issue' + (issues.length > 1 ? 's' : '') : '✅ Clean';
         document.getElementById('h-results').classList.add('visible');
+
+        // Context-aware CTA
+        const cta = document.getElementById('context-cta');
+        if (issues.length > 2) {
+            document.getElementById('cta-title').textContent = '⚠️ Your page has multiple heading errors';
+            document.getElementById('cta-text').textContent = 'Since there are several issues, a bulk crawl might help you identify other page-wide problems. Try Screaming Frog.';
+            cta.style.display = 'block';
+        } else {
+            cta.style.display = 'none';
+        }
     }
     </script>
 </body>
