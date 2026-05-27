@@ -36,7 +36,7 @@
             <button class="btn" onclick="generatePreview()">Generate Preview</button>
         </div>
 
-        <div class="result-box" id="preview-result">
+        <div class="result-box visible" id="preview-result">
             <h3>Google Search Result</h3>
             <div id="google-preview" style="background:#fff;color:#222;padding:16px;border-radius:8px;margin-bottom:24px;font-family:Arial,sans-serif;">
                 <div style="color:#202124;font-size:14px;margin-bottom:2px;" id="gp-url">example.com › blog-post</div>
@@ -83,17 +83,26 @@
         const desc = document.getElementById('page-desc').value || '';
         const image = document.getElementById('page-image').value || '';
 
-        const domain = new URL(url).hostname.replace('www.', '');
-        const path = new URL(url).pathname;
+        try {
+            const domain = new URL(url).hostname.replace('www.', '');
+            const path = new URL(url).pathname;
 
-        // Google preview
-        const pathPart = path.replace(/^\//, '').replace(/\//g, ' › ');
-        document.getElementById('gp-url').textContent = domain + (pathPart ? ' › ' + pathPart : '');
+            // Google preview
+            const pathPart = path.replace(/^\//, '').replace(/\//g, ' › ');
+            document.getElementById('gp-url').textContent = domain + (pathPart ? ' › ' + pathPart : '');
+        } catch (e) {
+            document.getElementById('gp-url').textContent = 'Invalid URL';
+        }
+
         document.getElementById('gp-title').textContent = title;
         document.getElementById('gp-desc').textContent = desc;
 
         // Twitter preview
-        document.getElementById('tw-domain').textContent = domain;
+        try {
+            document.getElementById('tw-domain').textContent = new URL(url).hostname.replace('www.', '');
+        } catch (e) {
+            document.getElementById('tw-domain').textContent = 'Invalid URL';
+        }
         document.getElementById('tw-title').textContent = title;
         document.getElementById('tw-desc').textContent = desc;
         const twImg = document.getElementById('tw-image');
@@ -102,9 +111,12 @@
         // Character counts
         document.getElementById('cc-title').textContent = `${title.length} / 60 ${title.length <= 60 ? '✓' : '⚠️ Too long'}`;
         document.getElementById('cc-desc').textContent = `${desc.length} / 160 ${desc.length <= 160 ? '✓' : '⚠️ Too long'}`;
-
-        document.getElementById('preview-result').classList.add('visible');
     }
+
+    // Attach listeners
+    ['page-url', 'page-title', 'page-desc', 'page-image'].forEach(id => {
+        document.getElementById(id).addEventListener('input', generatePreview);
+    });
 
     // Generate on load with defaults
     window.addEventListener('DOMContentLoaded', generatePreview);
