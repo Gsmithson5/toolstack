@@ -26,25 +26,22 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">Tool<span>Stack</span></a>
-            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+            <a href="/toolstack/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/toolstack/">Tools</a><a href="/toolstack/blog/">Blog</a></nav>
         </div>
     </header>
 
     <main class="tool-page container">
-        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <a href="/toolstack/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
         <h1>SSL Checker</h1>
         <p class="subtitle">Verify SSL certificates, check expiry dates, and ensure your site is secure. SSL is a confirmed ranking factor — don't let it expire.</p>
 
         <div class="tool-box">
-            <h3>🔒 Quick SSL Check</h3>
-            <p style="color:var(--text2);margin-bottom:16px;">Enter a domain below and use these free tools to check its SSL certificate.</p>
+            <h3>🔒 SSL Status Lookup</h3>
+            <p style="color:var(--text2);margin-bottom:16px;">This tool redirects you to industry-standard external services for comprehensive SSL analysis.</p>
             <input type="text" id="ssl-domain" placeholder="example.com" style="margin-bottom:12px;" value="github.com">
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <a href="#" class="btn" onclick="checkSSLRedirect(event)">Check SSL</a>
-            </div>
-            <div id="ssl-result" style="margin-top:16px;display:none;">
-                <div class="stat"><span class="label">Quick info for <span id="ssl-domain-display"></span>:</span></div>
+                <a href="#" class="btn" onclick="checkSSLRedirect(event)">Analyze with SSL Labs</a>
             </div>
         </div>
 
@@ -78,24 +75,7 @@
         e.preventDefault();
         const domain = document.getElementById('ssl-domain').value.trim();
         if (!domain) return;
-
-        document.getElementById('ssl-domain-display').textContent = domain;
-        const result = document.getElementById('ssl-result');
-        result.style.display = 'block';
-        result.innerHTML = `
-            <div class="stat"><span class="label">Domain</span><span class="value">${domain}</span></div>
-            <div class="stat"><span class="label">Recommended Action</span><span class="value">Use <a href="https://www.ssllabs.com/ssltest/analyze.html?d=${encodeURIComponent(domain)}" target="_blank" rel="nofollow">SSL Labs Report</a></span></div>
-            <div class="stat"><span class="label">Browser Check</span><span class="value"><a href="https://${domain}" target="_blank">Visit https://${domain}</a> and click the padlock</span></div>
-            <div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:8px;font-size:0.85rem;color:var(--text2);">
-                💡 SSL Labs provides the most comprehensive analysis including certificate chain validation, cipher suite strength, and TLS protocol support. Takes 1-2 minutes.
-            </div>
-        `;
-        
-        // Context-aware CTA update
-        if (domain.includes('bank') || domain.includes('shop') || domain.includes('store')) {
-            document.getElementById('cta-heading').textContent = "⚠️ High-Traffic Site? Don't Risk SSL Downtime";
-            document.getElementById('cta-text').textContent = "For e-commerce and banking, SSL expiration means immediate trust loss. Use UptimeRobot's automated monitoring to secure your reputation.";
-        }
+        window.open(`https://www.ssllabs.com/ssltest/analyze.html?d=${encodeURIComponent(domain)}`, '_blank');
     }
     </script>
 </body>

@@ -26,20 +26,19 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">Tool<span>Stack</span></a>
-            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+            <a href="/toolstack/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/toolstack/">Tools</a><a href="/toolstack/blog/">Blog</a></nav>
         </div>
     </header>
 
     <main class="tool-page container">
-        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <a href="/toolstack/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
         <h1>Word Counter</h1>
         <p class="subtitle">Count words, characters, sentences, and more. Just type or paste.</p>
 
         <div class="tool-box">
             <label for="text-input">Paste your text below</label>
-            <textarea id="text-input" placeholder="Type or paste your content here..." style="min-height:250px;"></textarea>
-            <button class="btn" onclick="analyzeText()">Analyze</button>
+            <textarea id="text-input" placeholder="Type or paste your content here..." style="min-height:250px;" oninput="analyzeText()"></textarea>
         </div>
 
         <div class="result-box" id="results">
@@ -53,11 +52,7 @@
             <div class="stat"><span class="label">Reading Time</span><span class="value" id="r-reading">0 min</span></div>
         </div>
 
-        <div class="affiliate-rec" id="affiliate-rec" style="display:none;">
-            <h3>✍️ Writing High-Ranking Content?</h3>
-            <p>Use Jasper AI to generate SEO-optimized content 10x faster. Start your free trial.</p>
-            <a href="/blog/best-ai-writing-tools.html" class="btn" target="_blank">Best AI Writing Tools →</a>
-            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
+
         </div>
     </main>
 
@@ -73,7 +68,6 @@
         const text = document.getElementById('text-input').value;
         if (!text.trim()) { 
             document.getElementById('results').classList.remove('visible'); 
-            document.getElementById('affiliate-rec').style.display = 'none';
             return; 
         }
 
@@ -93,10 +87,7 @@
         document.getElementById('r-avgwl').textContent = avgWordLen;
         document.getElementById('r-reading').textContent = readingTime + ' min' + (readingTime !== 1 ? 's' : '');
         document.getElementById('results').classList.add('visible');
-        document.getElementById('affiliate-rec').style.display = 'block';
     }
-
-    document.getElementById('text-input').addEventListener('input', analyzeText);
     </script>
 </body>
 </html>

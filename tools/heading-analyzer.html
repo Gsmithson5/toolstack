@@ -21,13 +21,13 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">Tool<span>Stack</span></a>
-            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+            <a href="/toolstack/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/toolstack/">Tools</a><a href="/toolstack/blog/">Blog</a></nav>
         </div>
     </header>
 
     <main class="tool-page container">
-        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <a href="/toolstack/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
         <h1>Heading Structure Analyzer</h1>
         <p class="subtitle">Analyze your H1-H6 heading structure for SEO best practices. Detect missing headings, improper hierarchy, and keyword opportunities.</p>
 
@@ -41,8 +41,7 @@
 <p>More content</p>
 <h3>Subsection</h3>
 <p>Details</p>
-<h2>Section 2</h2>' style="min-height:220px;font-family:monospace;font-size:0.85rem;"></textarea>
-            <button class="btn" onclick="analyzeHeadings()">Analyze Headings</button>
+            <textarea id="h-input" placeholder='Paste HTML or Markdown...' style="min-height:220px;font-family:monospace;font-size:0.85rem;" oninput="analyzeHeadings()"></textarea>
         </div>
 
         <div class="result-box" id="h-results">
@@ -57,14 +56,7 @@
             <div id="h-issues-list" style="margin-top:12px;"></div>
         </div>
 
-        <div class="affiliate-rec" id="context-cta" style="display:none; margin-top: 20px; padding: 15px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px;">
-            <h3 id="cta-title">🔍 Advanced SEO Analysis Needed?</h3>
-            <p id="cta-text">Need to crawl your entire site for heading errors? Screaming Frog SEO Spider is the industry standard for site audits.</p>
-            <a href="https://www.screamingfrog.co.uk/seo-spider/" class="btn" target="_blank" rel="nofollow sponsored">Download Screaming Frog →</a>
-            <p style="margin-top:8px;font-size:0.8rem;color:#666;">As an affiliate, we earn from qualifying purchases.</p>
-        </div>
-
-        <div class="affiliate-rec">
+        <div class="affiliate-rec" style="margin-top:32px;">
             <h3>🔍 Crawl Your Entire Site</h3>
             <p>Screaming Frog SEO Spider finds heading issues across hundreds of pages in minutes. Free for up to 500 URLs.</p>
             <a href="https://www.screamingfrog.co.uk/seo-spider/" class="btn" target="_blank" rel="nofollow sponsored">Download Screaming Frog →</a>
@@ -165,14 +157,7 @@
         document.getElementById('h-results').classList.add('visible');
 
         // Context-aware CTA
-        const cta = document.getElementById('context-cta');
-        if (issues.length > 2) {
-            document.getElementById('cta-title').textContent = '⚠️ Your page has multiple heading errors';
-            document.getElementById('cta-text').textContent = 'Since there are several issues, a bulk crawl might help you identify other page-wide problems. Try Screaming Frog.';
-            cta.style.display = 'block';
-        } else {
-            cta.style.display = 'none';
-        }
+        // Removed dynamic CTA update as it was redundant
     }
     </script>
 </body>

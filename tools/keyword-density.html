@@ -25,13 +25,13 @@
 <body>
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">Tool<span>Stack</span></a>
-            <nav class="nav"><a href="/">Tools</a><a href="/blog/">Blog</a></nav>
+            <a href="/toolstack/" class="logo">Tool<span>Stack</span></a>
+            <nav class="nav"><a href="/toolstack/">Tools</a><a href="/toolstack/blog/">Blog</a></nav>
         </div>
     </header>
 
     <main class="tool-page container">
-        <a href="/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
+        <a href="/toolstack/" class="btn btn-outline" style="margin-bottom:24px;display:inline-block;">&larr; Back to Tools</a>
         <h1>Keyword Density Checker</h1>
         <p class="subtitle">See which keywords your content is optimized for. Paste text and analyze instantly.</p>
 
@@ -82,7 +82,6 @@
         document.getElementById('kd-total').textContent = total;
 
         const freq = {};
-        const seen = new Set();
         words.forEach(w => {
             freq[w] = (freq[w] || 0) + 1;
         });

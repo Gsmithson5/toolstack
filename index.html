@@ -12,8 +12,8 @@
         <div class="container">
             <a href="./" class="logo">Tool<span>Stack</span></a>
             <nav class="nav">
-                <a href="./" class="active">Tools</a>
-                <a href="blog/" >Blog</a>
+                <a href="/toolstack/" class="active">Tools</a>
+                <a href="/toolstack/blog/" >Blog</a>
             </nav>
         </div>
     </header>
@@ -23,12 +23,18 @@
             <div class="container">
                 <h1>Free SEO Tools That Actually Work</h1>
                 <p>No signups. No limits. Just fast, accurate tools to help you rank higher.</p>
+                <div style="margin-top: 30px;">
+                    <a href="#toolGrid" class="btn">Explore All Tools</a>
+                </div>
             </div>
         </section>
 
         <section class="tools-grid container">
-            <h2>Our Tools</h2>
-            <div class="grid">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 60px;">
+                <h2>Our Tools</h2>
+                <input type="text" id="toolSearch" placeholder="Search tools..." style="background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); padding: 8px 16px; width: 250px;">
+            </div>
+            <div class="grid" id="toolGrid">
                 <a href="tools/meta-preview.html" class="tool-card">
                     <div class="icon">🔗</div>
                     <h3>Meta Tag Preview</h3>
@@ -87,5 +93,15 @@
             <p class="affiliate-disclosure">Some links on this site are affiliate links. We may earn a commission at no extra cost to you.</p>
         </div>
     </footer>
+    <script>
+        document.getElementById('toolSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const tools = document.querySelectorAll('.tool-card');
+            tools.forEach(tool => {
+                const title = tool.querySelector('h3').textContent.toLowerCase();
+                tool.style.display = title.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>
