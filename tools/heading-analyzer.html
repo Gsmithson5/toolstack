@@ -32,16 +32,8 @@
         <p class="subtitle">Analyze your H1-H6 heading structure for SEO best practices. Detect missing headings, improper hierarchy, and keyword opportunities.</p>
 
         <div class="tool-box">
-            <label for="h-input">Paste HTML or text content</label>
-            <textarea id="h-input" placeholder='Paste HTML with headings like:
-
-<h1>My Title</h1>
-<p>Some content</p>
-<h2>Section 1</h2>
-<p>More content</p>
-<h3>Subsection</h3>
-<p>Details</p>
-            <textarea id="h-input" placeholder='Paste HTML or Markdown...' style="min-height:220px;font-family:monospace;font-size:0.85rem;" oninput="analyzeHeadings()"></textarea>
+            <label for="h-input">Paste HTML or Markdown content</label>
+            <textarea id="h-input" placeholder="Paste HTML with heading tags or Markdown headings..." style="min-height:220px;font-family:monospace;font-size:0.85rem;" oninput="analyzeHeadings()"></textarea>
         </div>
 
         <div class="result-box" id="h-results">
@@ -72,6 +64,12 @@
     </footer>
 
     <script>
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[character]);
+    }
+
     function analyzeHeadings() {
         const input = document.getElementById('h-input').value.trim();
         if (!input) { document.getElementById('h-results').classList.remove('visible'); return; }
@@ -123,7 +121,7 @@
             const indent = '&nbsp;&nbsp;'.repeat(h.level - 1);
             const colors = ['#6c8cff', '#34d399', '#fbbf24', '#f97316', '#ef4444', '#a78bfa'];
             const color = colors[h.level - 1];
-            html += `<div style="border-left:3px solid ${color};padding-left:12px;margin-bottom:4px;">${indent}&lt;h${h.level}&gt; ${h.text} &lt;/h${h.level}&gt;</div>`;
+            html += `<div style="border-left:3px solid ${color};padding-left:12px;margin-bottom:4px;">${indent}&lt;h${h.level}&gt; ${escapeHtml(h.text)} &lt;/h${h.level}&gt;</div>`;
 
             if (h.level === 1) hasH1 = true;
 
@@ -132,7 +130,7 @@
                 issues.push(`First heading is H${h.level}, not H1. Pages should start with a single H1.`);
             }
             if (h.level > expectedLevel + 1) {
-                issues.push(`Heading "H${h.level}: ${h.text}" skips from H${expectedLevel}. Avoid jumping heading levels.`);
+                issues.push(`Heading "H${h.level}: ${escapeHtml(h.text)}" skips from H${expectedLevel}. Avoid jumping heading levels.`);
             }
             if (i > 0 && h.level < expectedLevel - 1) {
                 // Allow going back up, just track
@@ -149,7 +147,7 @@
         document.getElementById('h-has-h1').textContent = hasH1 ? '✅' : '❌';
 
         const issuesHtml = issues.map(issue => 
-            `<div style="color:${issue.includes('skips') || issue.includes('No H1') || issue.includes('Multiple') ? '#ef4444' : '#fbbf24'};padding:6px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">⚠️ ${issue}</div>`
+            `<div style="color:${issue.includes('skips') || issue.includes('No H1') || issue.includes('Multiple') ? '#ef4444' : '#fbbf24'};padding:6px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">⚠️ ${escapeHtml(issue)}</div>`
         ).join('');
 
         document.getElementById('h-issues-list').innerHTML = issuesHtml || '<div style="color:var(--green);">✅ No issues found! Good heading structure.</div>';
