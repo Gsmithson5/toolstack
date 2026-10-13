@@ -83,6 +83,11 @@
         // Count words, sentences, syllables
         const words = text.replace(/[^a-zA-Z\s]/g, '').split(/\s+/).filter(w => w.length > 0);
         const wordCount = words.length;
+        if (wordCount === 0) {
+            document.getElementById('read-results').style.display = 'none';
+            alert('Enter text containing at least one word made of A-Z letters to calculate readability.');
+            return;
+        }
         const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length || 1;
         const totalSyllables = words.reduce((sum, w) => sum + countSyllables(w), 0);
         const charsPer100 = words.reduce((sum, w) => sum + w.length, 0) / wordCount * 100;
